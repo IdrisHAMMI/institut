@@ -27,7 +27,7 @@ class Professeur
     /**
      * @var Collection<int, Matiere>
      */
-    #[ORM\OneToMany(targetEntity: Matiere::class, mappedBy: 'professeur')]
+    #[ORM\ManyToOne(targetEntity: Matiere::class, mappedBy: 'professeur')]
     private Collection $Matiere;
 
     public function __construct()
