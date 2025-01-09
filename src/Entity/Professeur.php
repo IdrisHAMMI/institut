@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProfesseurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProfesseurRepository::class)]
@@ -21,6 +23,17 @@ class Professeur
 
     #[ORM\Column(length: 50)]
     private ?string $prenom = null;
+
+    /**
+     * @var Collection<int, Matiere>
+     */
+    #[ORM\OneToMany(targetEntity: Matiere::class, mappedBy: 'professeur')]
+    private Collection $Matiere;
+
+    public function __construct()
+    {
+        $this->Matiere = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +72,36 @@ class Professeur
     public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Matiere>
+     */
+    public function getMatiere(): Collection
+    {
+        return $this->Matiere;
+    }
+
+    public function addMatiere(Matiere $matiere): static
+    {
+        if (!$this->Matiere->contains($matiere)) {
+            $this->Matiere->add($matiere);
+            $matiere->setProfesseur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMatiere(Matiere $matiere): static
+    {
+        if ($this->Matiere->removeElement($matiere)) {
+            // set the owning side to null (unless already changed)
+            if ($matiere->getProfesseur() === $this) {
+                $matiere->setProfesseur(null);
+            }
+        }
 
         return $this;
     }

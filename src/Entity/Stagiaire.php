@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StagiaireRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,6 +27,17 @@ class Stagiaire
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateInscription = null;
+
+    /**
+     * @var Collection<int, Stage>
+     */
+    #[ORM\ManyToMany(targetEntity: Stage::class, inversedBy: 'stagiaires')]
+    private Collection $Stage;
+
+    public function __construct()
+    {
+        $this->Stage = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +88,30 @@ class Stagiaire
     public function setDateInscription(\DateTimeInterface $dateInscription): static
     {
         $this->dateInscription = $dateInscription;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Stage>
+     */
+    public function getStage(): Collection
+    {
+        return $this->Stage;
+    }
+
+    public function addStage(Stage $stage): static
+    {
+        if (!$this->Stage->contains($stage)) {
+            $this->Stage->add($stage);
+        }
+
+        return $this;
+    }
+
+    public function removeStage(Stage $stage): static
+    {
+        $this->Stage->removeElement($stage);
 
         return $this;
     }
