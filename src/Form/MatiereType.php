@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Matiere;
-use App\Entity\Professeur;
 use App\Entity\Stage;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -22,11 +21,7 @@ class MatiereType extends AbstractType
                 'choice_label' => 'id',
                 'multiple' => true,
             ])
-            ->add('professeur', EntityType::class, [
-                'class' => Professeur::class,
-                'choice_label' => 'id',
-            ])
-        ;
+    ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

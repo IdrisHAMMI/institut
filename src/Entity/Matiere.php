@@ -21,14 +21,18 @@ class Matiere
     #[ORM\Column(length: 50)]
     private ?string $libelle = null;
 
+
+
     /**
      * @var Collection<int, Stage>
      */
     #[ORM\ManyToMany(targetEntity: Stage::class, inversedBy: 'matieres')]
     private Collection $Stage;
 
-    #[ORM\ManyToOne(inversedBy: 'Matiere')]
+    #[ORM\ManyToOne(inversedBy: 'matieres')]
     private ?Professeur $professeur = null;
+
+
 
     public function __construct()
     {
@@ -99,4 +103,6 @@ class Matiere
 
         return $this;
     }
+
+   
 }

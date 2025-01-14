@@ -12,8 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/professeur')]
-final class ProfesseurController extends AbstractController
-{
+final class ProfesseurController extends AbstractController{
     #[Route(name: 'app_professeur_index', methods: ['GET'])]
     public function index(ProfesseurRepository $professeurRepository): Response
     {

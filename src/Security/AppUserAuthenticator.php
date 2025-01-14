@@ -49,7 +49,7 @@ class AppUserAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         // For example:
-        return new RedirectResponse($this->urlGenerator->generate('/'));
+        return new RedirectResponse($this->urlGenerator->generate('/matiere'));
     }
 
     protected function getLoginUrl(Request $request): string

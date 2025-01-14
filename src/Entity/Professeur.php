@@ -18,7 +18,7 @@ class Professeur
     #[ORM\Column(length: 50)]
     private ?string $matricule = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 30)]
     private ?string $nom = null;
 
     #[ORM\Column(length: 50)]
@@ -27,12 +27,12 @@ class Professeur
     /**
      * @var Collection<int, Matiere>
      */
-    #[ORM\ManyToOne(targetEntity: Matiere::class, inversedBy: 'professeur')]
-    private Collection $Matiere;
+    #[ORM\OneToMany(targetEntity: Matiere::class, mappedBy: 'professeur')]
+    private Collection $matieres;
 
     public function __construct()
     {
-        $this->Matiere = new ArrayCollection();
+        $this->matieres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -79,15 +79,15 @@ class Professeur
     /**
      * @return Collection<int, Matiere>
      */
-    public function getMatiere(): Collection
+    public function getMatieres(): Collection
     {
-        return $this->Matiere;
+        return $this->matieres;
     }
 
     public function addMatiere(Matiere $matiere): static
     {
-        if (!$this->Matiere->contains($matiere)) {
-            $this->Matiere->add($matiere);
+        if (!$this->matieres->contains($matiere)) {
+            $this->matieres->add($matiere);
             $matiere->setProfesseur($this);
         }
 
@@ -96,7 +96,7 @@ class Professeur
 
     public function removeMatiere(Matiere $matiere): static
     {
-        if ($this->Matiere->removeElement($matiere)) {
+        if ($this->matieres->removeElement($matiere)) {
             // set the owning side to null (unless already changed)
             if ($matiere->getProfesseur() === $this) {
                 $matiere->setProfesseur(null);
