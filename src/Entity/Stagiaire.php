@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: StagiaireRepository::class)]
 class Stagiaire
@@ -17,15 +18,39 @@ class Stagiaire
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
+    /**
+     * @Assert\NotBlank(message="Nom cannot be blank.")
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 20,
+     *     minMessage = "Nom must be at least {{ limit }} characters long",
+     *     maxMessage = "Nom cannot be longer than {{ limit }} characters"
+     * )
+     */
     private ?string $nom = null;
 
     #[ORM\Column(length: 50)]
+    /**
+     * @Assert\NotBlank(message="Adresse cannot be blank.")
+     */
     private ?string $adresse = null;
 
     #[ORM\Column]
+    /**
+     * @Assert\NotBlank(message="Code cannot be blank.")
+     * @Assert\Range(
+     *     min = 100,
+     *     max = 1000,
+     *     notInRangeMessage = "Code must be between {{ min }} and {{ max }}",
+     * )
+     */
     private ?int $code = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    /**
+     * @Assert\NotBlank(message="Date inscription cannot be blank.")
+     * @Assert\Date(message="Invalid date format.")
+     */
     private ?\DateTimeInterface $dateInscription = null;
 
     /**
