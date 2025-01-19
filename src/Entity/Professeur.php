@@ -16,12 +16,38 @@ class Professeur
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    /**
+     * @Assert\NotBlank
+     * @Assert\Range(
+     *     min = 100,
+     *     max = 1000,
+     *     notInRangeMessage = "Matricule must be between {{ min }} and {{ max }}",
+     * )
+     */
     private ?string $matricule = null;
 
     #[ORM\Column(length: 30)]
+    /**
+     * @Assert\NotBlank(message="Nom cannot be blank.")
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 20,
+     *     minMessage = "Nom must be at least {{ limit }} characters long",
+     *     maxMessage = "Nom cannot be longer than {{ limit }} characters"
+     * )
+     */
     private ?string $nom = null;
 
     #[ORM\Column(length: 50)]
+    /**
+     * @Assert\NotBlank(message="Nom cannot be blank.")
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 20,
+     *     minMessage = "Nom must be at least {{ limit }} characters long",
+     *     maxMessage = "Nom cannot be longer than {{ limit }} characters"
+     * )
+     */
     private ?string $prenom = null;
 
     /**

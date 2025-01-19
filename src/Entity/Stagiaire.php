@@ -36,14 +36,7 @@ class Stagiaire
     private ?string $adresse = null;
 
     #[ORM\Column]
-    /**
-     * @Assert\NotBlank(message="Code cannot be blank.")
-     * @Assert\Range(
-     *     min = 100,
-     *     max = 1000,
-     *     notInRangeMessage = "Code must be between {{ min }} and {{ max }}",
-     * )
-     */
+
     private ?int $code = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]

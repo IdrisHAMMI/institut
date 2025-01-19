@@ -35,5 +35,10 @@
         </tbody>
     </table>
 
+    {% for error in form.vars.errors %}
+        <div class="error">{{ error.message }}</div>
+    {% endfor %}
+
+
     <a href="{{ path('app_professeur_new') }}">Create new</a>
 {% endblock %}
