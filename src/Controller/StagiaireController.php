@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Stagiaire;
 use App\Form\StagiaireType;
 use App\Repository\StagiaireRepository;
+use App\Entity\Stage;
+use App\Repository\StageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -77,5 +79,44 @@ final class StagiaireController extends AbstractController
         }
 
         return $this->redirectToRoute('app_stagiaire_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/{id}/register-internship/{stageId}', name: 'app_stagiaire_register_stage', methods: ['POST'])]
+    public function registerForStage(int $id, int $stageId, EntityManagerInterface $entityManager): Response
+    {
+        $stagiaire = $entityManager->getRepository(Stagiaire::class)->find($id);
+        $stage = $entityManager->getRepository(Stage::class)->find($stageId);
+
+        if (!$stagiaire || !$stage) {
+            return $this->redirectToRoute('app_stagiaire_index');
+        }
+
+        if ($stage->getEndDate() < new \DateTime()) {
+            $stagiaire->addStage($stage);
+            $entityManager->persist($stagiaire);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Stage registration successful!');
+        } else {
+            $this->addFlash('error', 'Cannot register for this stage. It has not ended yet.');
+        }
+
+        return $this->redirectToRoute('app_stagiaire_show', ['id' => $id]);
+    }
+
+    
+    #[Route('/{id}/account', name: 'app_stagiaire_account', methods: ['GET'])]
+    public function viewAccount(int $id, EntityManagerInterface $entityManager, StageRepository $stageRepository): Response
+    {
+        $stagiaire = $entityManager->getRepository(Stagiaire::class)->find($id);
+
+        if (!$stagiaire) {
+            throw $this->createNotFoundException('Student not found');
+        }
+
+        return $this->render('stagiaire/account.html.twig', [
+            'stagiaire' => $stagiaire,
+            'stages' => $stageRepository //FETCHES INTERNSHIPS FROM IMPORT
+        ]);
     }
 }

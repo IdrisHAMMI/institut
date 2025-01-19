@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Student Account{% endblock %}
+
+{% block body %}
+    <h1>Account Details for {{ app.user.email }}</h1>
+    <h2>Stages</h2>
+    <ul>
+        {% for stage in stages %}
+            <li>{{ stage.name }} (End Date: {{ stage.endDate|date('Y-m-d') }})</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

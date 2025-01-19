@@ -28,6 +28,9 @@
                     <a href="{{ path('app_stage_index') }}" class="btn btn-success">Stage</a>
                     <a href="{{ path('app_stagiaire_index') }}" class="btn btn-success">Stagiaire</a>
                     <a href="{{ path('app_logout') }}" class="btn btn-danger">Déconnexion</a>
+                    {% elseif is_granted('ROLE_USER') %}
+                    <a href="{{ path('app_user_profile') }}" class="btn btn-success">My Profile</a>
+                    <a href="{{ path('app_logout') }}" class="btn btn-danger">Déconnexion</a>
                   {% endif %}
                     <div class="text-end">
                         {{ app.user.email }}
